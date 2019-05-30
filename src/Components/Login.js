@@ -15,6 +15,7 @@ class Login extends Component {
 
     componentDidMount() {
         axios.get('/auth/user').then((res) => {
+            console.log(res.data)
             this.props.updateUser(res.data)
             this.props.history.push('/details')
         })
@@ -26,21 +27,35 @@ class Login extends Component {
         })
     }
 
+    handleUserLogin = (e) => {
+        e.preventDefault()
+        const { username, password } = this.state
+        axios.post('/auth/login', { username, password }).then((res) => {
+            this.props.history.push('/details')
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+        e.target.username.value = ''
+        e.target.password.value = ''
+    }
+
     render() {
+        // console.log('THIS.STATE', this.state)
         return (
             <div>
                 <h1>Login</h1>
-                <form>
+                <form onSubmit={this.handleUserLogin}>
                     <input
                         type='text'
                         name='username'
                         placeholder='username'
                         onChange={this.handleLoginInfoUpdate} />
                     <input
-                        type="password"
-                        name="password"
-                        placeholder="password"
-                        onchange={this.handleLoginInfoUpdate} />
+                        type='password'
+                        name='password'
+                        placeholder='password'
+                        onChange={this.handleLoginInfoUpdate} />
                     <button>Log In</button>
                 </form>
             </div>
