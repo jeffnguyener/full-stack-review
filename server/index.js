@@ -20,7 +20,7 @@ app.use(session({
 
 massive(CONNECTION_STRING).then((database) => {
     app.set('db', database)
-    console.log('Database is running!')
+    console.log('Database is running!', database.listTables())
     app.listen(SERVER_PORT, () => console.log(`Listening on server port ${SERVER_PORT}`))
 })
 
